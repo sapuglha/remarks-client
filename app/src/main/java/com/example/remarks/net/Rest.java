@@ -13,7 +13,7 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 public class Rest {
-    RestService service;
+    private RestService service;
 
     public Rest() {
         final Moshi moshi = new Moshi.Builder()
@@ -28,12 +28,12 @@ public class Rest {
         service = retrofit.create(RestService.class);
     }
 
-    public Call<ResponseBody> send(Comment comment) {
+    public Call<ResponseBody> sendComment(Comment comment) {
         return service.sendComment(comment);
     }
 
     private interface RestService {
         @POST("comment/")
-        Call<ResponseBody> sendComment(@Body Comment user);
+        Call<ResponseBody> sendComment(@Body Comment comment);
     }
 }

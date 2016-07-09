@@ -1,8 +1,6 @@
 package com.example.remarks;
 
 
-import android.util.Log;
-
 import com.example.remarks.models.Comment;
 import com.ryanharter.auto.value.moshi.AutoValueMoshiAdapterFactory;
 import com.squareup.moshi.JsonAdapter;
@@ -20,18 +18,36 @@ public class CommentUnitTest {
     @Test
     public void comment_compareEquals() throws Exception {
         long now = System.currentTimeMillis();
-        Comment first = Comment.create("Comment", now);
-        Comment second = Comment.create("Comment", now);
+
+        Comment first = Comment
+                .builder()
+                .comment("Comment")
+                .timestamp(now)
+                .build();
+
+        Comment second = Comment
+                .builder()
+                .comment("Comment")
+                .timestamp(now)
+                .build();
 
         assertTrue(first.equals(second));
     }
 
     @Test
     public void comment_compareDifferent() throws Exception {
-        long now = System.currentTimeMillis();
+        Comment first = Comment
+                .builder()
+                .comment("first")
+                .build(); // using constructor provided timestamp, since we're not specifying one here
 
-        Comment first = Comment.create("First", now);
-        Comment second = Comment.create("First", now + 1);
+        long firstTimestamp = first.getTimestamp();
+
+        Comment second = Comment
+                .builder()
+                .comment("first")
+                .timestamp(firstTimestamp + 1) // the timestamp will be different from the previous
+                .build();
 
         assertFalse(first.equals(second));
     }
@@ -41,7 +57,11 @@ public class CommentUnitTest {
         long timestamp = System.currentTimeMillis();
         String message = "A new comment.";
 
-        Comment comment = Comment.create(message, timestamp);
+        Comment comment = Comment
+                .builder()
+                .comment(message)
+                .timestamp(timestamp)
+                .build();
 
         String expectedOutput = String.format(Locale.ENGLISH, "Comment{comment=%s, timestamp=%d}", message, timestamp);
 
@@ -54,7 +74,11 @@ public class CommentUnitTest {
                 .add(new AutoValueMoshiAdapterFactory())
                 .build();
 
-        Comment comment = Comment.create("blah", 1468099366980L);
+        Comment comment = Comment
+                .builder()
+                .comment("blah")
+                .timestamp(1468099366980L)
+                .build();
 
         JsonAdapter<Comment> jsonAdapter = moshi.adapter(Comment.class);
 

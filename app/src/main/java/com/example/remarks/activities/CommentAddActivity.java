@@ -23,7 +23,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 public class CommentAddActivity extends AppCompatActivity {
-    private static final String TAG = " CommentAddActivity";
+    private static final String TAG = "CommentAddActivity";
 
     @BindView(R.id.comment_add_text)
     TextView comment;
@@ -37,7 +37,11 @@ public class CommentAddActivity extends AppCompatActivity {
             return;
         }
 
-        Comment newComment = Comment.create(commentText, System.currentTimeMillis());
+        Comment newComment = Comment.builder()
+                .comment(commentText)
+                .timestamp(System.currentTimeMillis())
+                .build();
+
         new PostCommentTask().execute(newComment);
 
         Toast.makeText(this, R.string.comment_add_activity_toast_message_sent, Toast.LENGTH_LONG).show();
@@ -58,27 +62,29 @@ public class CommentAddActivity extends AppCompatActivity {
             // before starting a network request we should persist the comment,
             // then if network request fails it's possible to retry later
 
+            boolean returnValue = false;
+
             Rest restHttpClient = new Rest();
             for (Comment comment : comments) {
-                Call<ResponseBody> call = restHttpClient.send(comment);
+                Call<ResponseBody> call = restHttpClient.sendComment(comment);
                 try {
                     Response<ResponseBody> response = call.execute();
                     if (null == response) {
                         Log.e(TAG, "Unknown error sending comment");
                     } else if (!response.isSuccessful()) {
                         Log.e(TAG, String.format("Response http status: %s, body: %s", response.code(), response.body().string()));
-                        return false;
                     } else {
                         // TODO: remove the comment from the local storage
                         Log.d(TAG, String.format("Response http status: %s, body: %s", response.code(), response.body().string()));
+                        returnValue = true;
                     }
                 } catch (IOException e) {
-                    // TODO: properly handle exception: log if on debug build, and send to a crash reporting service
+                    // TODO: properly handle exception: log if on debug build, and sendComment to a crash reporting service
                     e.printStackTrace();
                 }
             }
 
-            return false;
+            return returnValue;
         }
     }
 }
