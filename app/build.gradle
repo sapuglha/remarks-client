@@ -16,6 +16,20 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            buildConfigField "String", "BASE_URL", "\"http://production.server.com\""
+        }
+
+        debug {
+            applicationIdSuffix ".debug"
+            buildConfigField "String", "BASE_URL", "\"http://debug.server.com\""
+        }
+
+        emulator {
+            applicationIdSuffix ".emulator"
+
+            // emulator accessing localhost
+            buildConfigField "String", "BASE_URL", "\"http://10.0.2.2:9090\""
         }
     }
 }
