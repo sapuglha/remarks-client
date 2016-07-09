@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Remarks</string>
 
-    <string name="message_add_activity_text_label">Enter your message:</string>
-    <string name="message_add_activity_edit_text_hint">Your message goes here</string>
-    <string name="message_add_activity_button_label_send">Send</string>
-    <string name="message_add_activity_toast_message_sent">Message sent.</string>
+    <string name="comment_add_activity_text_label">Enter your comment:</string>
+    <string name="comment_add_activity_edit_text_hint">Your comment goes here</string>
+    <string name="comment_add_activity_button_label_send">Send</string>
+    <string name="comment_add_activity_toast_message_sent">Comment sent.</string>
 </resources>
