@@ -1,6 +1,7 @@
 package com.example.remarks.net;
 
 import com.example.remarks.BuildConfig;
+import com.example.remarks.models.Annotation;
 import com.example.remarks.models.Comment;
 import com.ryanharter.auto.value.moshi.AutoValueMoshiAdapterFactory;
 import com.squareup.moshi.Moshi;
@@ -32,8 +33,15 @@ public class Rest {
         return service.sendComment(comment);
     }
 
+    public Call<ResponseBody> sendAnnotation(Annotation annotation) {
+        return service.sendAnnotation(annotation);
+    }
+
     private interface RestService {
         @POST("comment/")
         Call<ResponseBody> sendComment(@Body Comment comment);
+
+        @POST("annotation/")
+        Call<ResponseBody> sendAnnotation(@Body Annotation annotation);
     }
 }
