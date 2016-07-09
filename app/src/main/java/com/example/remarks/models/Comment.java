@@ -1,11 +1,12 @@
 package com.example.remarks.models;
 
+import com.example.remarks.interfaces.TextInterface;
 import com.google.auto.value.AutoValue;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 
 @AutoValue
-public abstract class Comment {
+public abstract class Comment implements TextInterface {
     // This jsonAdapter is used for conversion to/from JSON
     public static JsonAdapter<Comment> jsonAdapter(Moshi moshi) {
         return new AutoValue_Comment.MoshiJsonAdapter(moshi);
