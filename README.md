@@ -1,6 +1,6 @@
 # Remarks Client
 
-This project demonstrates a simple approach to save instances of Comments class to a remote server.
+This project demonstrates a simple approach to save instances of Comment class to a remote server.
 
 ## Class: Comment
 
