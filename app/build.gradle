@@ -32,6 +32,11 @@ dependencies {
     apt 'com.google.auto.value:auto-value:1.2'
     provided 'com.jakewharton.auto.value:auto-value-annotations:1.2-update1'
 
+    // Moshi for JSON serialization
     compile 'com.squareup.moshi:moshi:1.2.0'
     apt 'com.ryanharter.auto.value:auto-value-moshi:0.3.3-rc1'
+
+    // Butterknife to link UI elements in classes
+    compile 'com.jakewharton:butterknife:8.1.0'
+    apt 'com.jakewharton:butterknife-compiler:8.1.0'
 }
