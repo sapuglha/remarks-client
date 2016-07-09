@@ -14,22 +14,41 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        // Commit debug.keystore to SCM, every developer uses same key
+        // it's easier to exchange APKs
+        debug {
+            storeFile file("debug.keystore")
+        }
+
+        release {
+            storeFile file("release.keystore")
+            storePassword "myPassword"
+            keyAlias "myAlias"
+            keyPassword "Something...."
+        }
+    }
+
     buildTypes {
         release {
+            debuggable false
             minifyEnabled false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-
             buildConfigField "String", "BASE_URL", "\"http://production.server.com\""
         }
 
         debug {
+            debuggable true
             applicationIdSuffix ".debug"
+            signingConfig signingConfigs.debug
             buildConfigField "String", "BASE_URL", "\"http://debug.server.com\""
         }
 
         emulator {
+            debuggable true
             applicationIdSuffix ".emulator"
-
+            signingConfig signingConfigs.debug
             // emulator accessing localhost
             buildConfigField "String", "BASE_URL", "\"http://10.0.2.2:9090\""
         }
@@ -37,7 +56,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
 
     testCompile 'junit:junit:4.12'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
