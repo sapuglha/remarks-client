@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">Remarks</string>
 
-    <string name="comment_add_activity_text_label">Enter your comment:</string>
-    <string name="comment_add_activity_edit_text_hint">Your comment goes here</string>
-    <string name="comment_add_activity_button_label_send">Send</string>
-    <string name="comment_add_activity_toast_message_sent">Comment sent.</string>
+    <string name="add_remark_activity_spinner_label">Pick remark type:</string>
+    <string name="add_remark_activity_edit_text_hint">Your text</string>
+    <string name="add_remark_activity_button_label_send">Send</string>
+    <string name="add_remark_activity_toast_message_success">Sent.</string>
+    <string name="add_remark_activity_toast_message_error">Remark will be sent later.</string>
 </resources>
