@@ -2,6 +2,8 @@
 
 This project demonstrates a simple approach to save Comments and Annotations into a remote server.
 
+- Developed using Android Studio 2.2 preview 5.
+
 ## Comment and Annotation classes
 
 These value classes use [AutoValue](https://github.com/google/auto/tree/master/value), they have less code without the need to worry about toString(), equals(), hashCode().
