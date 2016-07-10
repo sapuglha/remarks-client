@@ -26,9 +26,11 @@ These classes are using the [Builder Pattern] (http://www.informit.com/articles/
 
 ### Alternative implementation
 
-It is clear that it it's possible to create an abstract supper class, call it Remark, containing these common properties, from which both Comment and Annotation would extend. Finally use a factory to construct a Remark, and given the parameters the returning object instance could be either a Comment or Annotation. 
+It is clear that it it's possible to create an abstract super class, call it Remark, containing these common properties, from which both Comment and Annotation would extend. Finally use a factory to construct a Remark, and given the parameters the returning object instance could be either a Comment or Annotation. 
 
 The current approach using AutoValue limits that extensibility, so it was a trade-off between having a more robust class, with better extensibility to add more properties in the future, versus having a bit more complex class hierarchy with less duplicate code.
+
+This approach can be check at this [branch](https://github.com/sapuglha/remarks-client/tree/factory-pattern).
 
 
 ## TextInterface
