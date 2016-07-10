@@ -82,15 +82,9 @@ public class AddRemarkActivity extends AppCompatActivity {
             boolean returnValue = false;
             String message = messages[0];
 
-            Rest restHttpClient = Rest.getInstance();
-            Call<ResponseBody> call;
+            Remark remark = RemarkFactory.getRemark(selectedType, message, 0);
 
-
-            Remark remark = RemarkFactory.getRemark(selectedType.toLowerCase(),
-                    message, System.currentTimeMillis());
-
-            call = restHttpClient.sendRemark(remark);
-
+            Call<ResponseBody> call = Rest.getInstance().sendRemark(remark);
             if (null == call) {
                 return false;
             }
