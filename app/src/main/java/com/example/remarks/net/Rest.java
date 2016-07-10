@@ -14,9 +14,10 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 public class Rest {
+    private static Rest instance;
     private RestService service;
 
-    public Rest() {
+    private Rest() {
         final Moshi moshi = new Moshi.Builder()
                 .add(new AutoValueMoshiAdapterFactory())
                 .build();
@@ -27,6 +28,13 @@ public class Rest {
                 .build();
 
         service = retrofit.create(RestService.class);
+    }
+
+    public static Rest getInstance() {
+        if (null == instance) {
+            instance = new Rest();
+        }
+        return instance;
     }
 
     public Call<ResponseBody> sendComment(Comment comment) {

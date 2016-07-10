@@ -64,7 +64,7 @@ public class CommentAddActivity extends AppCompatActivity {
 
             boolean returnValue = false;
 
-            Rest restHttpClient = new Rest();
+            Rest restHttpClient = Rest.getInstance();
             for (Comment comment : comments) {
                 Call<ResponseBody> call = restHttpClient.sendComment(comment);
                 try {

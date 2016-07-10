@@ -28,7 +28,7 @@ public abstract class Comment implements TextInterface {
     }
 
     // ====================
-    // Class properties
+    // Class' properties
     abstract String comment();
 
     abstract long timestamp();

@@ -28,7 +28,7 @@ public abstract class Annotation implements TextInterface {
     }
 
     // ====================
-    // Class properties
+    // Class' properties
     abstract String annotation();
 
     abstract long timestamp();
@@ -42,6 +42,4 @@ public abstract class Annotation implements TextInterface {
     public long getTimestamp() {
         return timestamp();
     }
-
-
 }
