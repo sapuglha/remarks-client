@@ -1,45 +1,34 @@
 package com.example.remarks.models;
 
-import com.example.remarks.interfaces.TextInterface;
-import com.google.auto.value.AutoValue;
-import com.squareup.moshi.JsonAdapter;
-import com.squareup.moshi.Moshi;
+import com.squareup.moshi.Json;
 
-@AutoValue
-public abstract class Comment implements TextInterface {
-    // This jsonAdapter is used for conversion to/from JSON
-    public static JsonAdapter<Comment> jsonAdapter(Moshi moshi) {
-        return new AutoValue_Comment.MoshiJsonAdapter(moshi);
+public class Comment extends Remark {
+    @Json(name = "comment")
+    public String message;
+
+    private Comment(Builder builder) {
+        message = builder.message;
+        timestamp = builder.timestamp;
     }
 
-    // Builder pattern: http://www.informit.com/articles/article.aspx?p=1216151&seqNum=2
-    public static Builder builder() {
-        return new AutoValue_Comment.Builder()
-                .timestamp(System.currentTimeMillis()); // set default timestamp
-    }
+    static class Builder {
+        // Required parameters
+        private final String message;
 
-    @AutoValue.Builder
-    public abstract static class Builder {
-        public abstract Builder comment(String comment);
+        // Optional parameters - initialized to default values
+        private long timestamp = System.currentTimeMillis();
 
-        public abstract Builder timestamp(long timestamp);
+        Builder(String message) {
+            this.message = message;
+        }
 
-        public abstract Comment build();
-    }
+        public Builder timestamp(long val) {
+            timestamp = val;
+            return this;
+        }
 
-    // ====================
-    // Class' properties
-    abstract String comment();
-
-    abstract long timestamp();
-
-    // ====================
-    // Only create getters() to prevent values from changing from outside
-    public String getText() {
-        return comment();
-    }
-
-    public long getTimestamp() {
-        return timestamp();
+        public Comment build() {
+            return new Comment(this);
+        }
     }
 }

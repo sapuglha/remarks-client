@@ -1,12 +1,9 @@
 package com.example.remarks.net;
 
-import android.os.Build;
-
 import com.example.remarks.BuildConfig;
 import com.example.remarks.models.Annotation;
 import com.example.remarks.models.Comment;
-import com.ryanharter.auto.value.moshi.AutoValueMoshiAdapterFactory;
-import com.squareup.moshi.Moshi;
+import com.example.remarks.models.Remark;
 
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
@@ -22,25 +19,20 @@ public class Rest {
     private RestService service;
 
     private Rest() {
-        final Moshi moshi = new Moshi.Builder()
-                .add(new AutoValueMoshiAdapterFactory())
-                .build();
-
-
-        OkHttpClient.Builder okhttpBuilder = new OkHttpClient.Builder();
+        OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
 
         if (BuildConfig.DEBUG) {
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-            okhttpBuilder.addInterceptor(interceptor);
+            okHttpBuilder.addInterceptor(interceptor);
         }
 
-        final OkHttpClient client = okhttpBuilder.build();
+        final OkHttpClient client = okHttpBuilder.build();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BuildConfig.BASE_URL)
                 .client(client)
-                .addConverterFactory(MoshiConverterFactory.create(moshi))
+                .addConverterFactory(MoshiConverterFactory.create())
                 .build();
 
         service = retrofit.create(RestService.class);
@@ -53,12 +45,14 @@ public class Rest {
         return instance;
     }
 
-    public Call<ResponseBody> sendComment(Comment comment) {
-        return service.sendComment(comment);
-    }
+    public Call<ResponseBody> sendRemark(Remark remark) {
+        if (remark.getClass() == Comment.class) {
+            return service.sendComment((Comment) remark);
+        } else if (remark.getClass() == Annotation.class) {
+            return service.sendAnnotation((Annotation) remark);
+        }
 
-    public Call<ResponseBody> sendAnnotation(Annotation annotation) {
-        return service.sendAnnotation(annotation);
+        return null;
     }
 
     private interface RestService {

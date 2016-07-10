@@ -12,8 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.remarks.R;
-import com.example.remarks.models.Annotation;
-import com.example.remarks.models.Comment;
+import com.example.remarks.models.Remark;
+import com.example.remarks.models.RemarkFactory;
 import com.example.remarks.net.Rest;
 
 import java.io.IOException;
@@ -83,26 +83,16 @@ public class AddRemarkActivity extends AppCompatActivity {
             String message = messages[0];
 
             Rest restHttpClient = Rest.getInstance();
-            Call<ResponseBody> call = null;
+            Call<ResponseBody> call;
 
-            if ("Comment".equals(selectedType)) {
-                Comment comment = Comment.builder()
-                        .comment(message)
-                        .timestamp(System.currentTimeMillis())
-                        .build();
 
-                call = restHttpClient.sendComment(comment);
-            } else if ("Annotation".equals(selectedType)) {
-                Annotation annotation = Annotation.builder()
-                        .annotation(message)
-                        .timestamp(System.currentTimeMillis())
-                        .build();
+            Remark remark = RemarkFactory.getRemark(selectedType.toLowerCase(),
+                    message, System.currentTimeMillis());
 
-                call = restHttpClient.sendAnnotation(annotation);
-            }
+            call = restHttpClient.sendRemark(remark);
 
             if (null == call) {
-                return returnValue;
+                return false;
             }
 
             try {

@@ -2,83 +2,33 @@ package com.example.remarks;
 
 
 import com.example.remarks.models.Comment;
-import com.ryanharter.auto.value.moshi.AutoValueMoshiAdapterFactory;
+import com.example.remarks.models.RemarkFactory;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 
 import org.junit.Test;
 
-import java.util.Locale;
-
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
 
 public class CommentUnitTest {
     @Test
-    public void comment_compareEquals() throws Exception {
-        long now = System.currentTimeMillis();
-
-        Comment first = Comment
-                .builder()
-                .comment("Comment")
-                .timestamp(now)
-                .build();
-
-        Comment second = Comment
-                .builder()
-                .comment("Comment")
-                .timestamp(now)
-                .build();
-
-        assertTrue(first.equals(second));
-    }
-
-    @Test
-    public void comment_compareDifferent() throws Exception {
-        Comment first = Comment
-                .builder()
-                .comment("first")
-                .build(); // using constructor provided timestamp, since we're not specifying one here
+    public void Comment_compareDifferent() throws Exception {
+        // using constructor provided timestamp, since we're not specifying one here
+        Comment first = (Comment) RemarkFactory.getRemark("Comment", "first", 0);
 
         long firstTimestamp = first.getTimestamp();
 
-        Comment second = Comment
-                .builder()
-                .comment("first")
-                .timestamp(firstTimestamp + 1) // the timestamp will be different from the previous
-                .build();
+        Comment second = (Comment) RemarkFactory.getRemark("Comment", "first", firstTimestamp + 1);
 
         assertFalse(first.equals(second));
     }
 
     @Test
-    public void comment_stringFormat() throws Exception {
-        long timestamp = System.currentTimeMillis();
-        String message = "A new comment.";
+    public void Comment_MoshiConversion() throws Exception {
+        Moshi moshi = new Moshi.Builder().build();
 
-        Comment comment = Comment
-                .builder()
-                .comment(message)
-                .timestamp(timestamp)
-                .build();
-
-        String expectedOutput = String.format(Locale.ENGLISH, "Comment{comment=%s, timestamp=%d}", message, timestamp);
-
-        assertTrue(expectedOutput.equals(comment.toString()));
-    }
-
-    @Test
-    public void comment_MoshiConversion() throws Exception {
-        Moshi moshi = new Moshi.Builder()
-                .add(new AutoValueMoshiAdapterFactory())
-                .build();
-
-        Comment comment = Comment
-                .builder()
-                .comment("blah")
-                .timestamp(1468099366980L)
-                .build();
+        Comment comment = (Comment) RemarkFactory.getRemark("Comment", "blah", 1468099366980L);
 
         JsonAdapter<Comment> jsonAdapter = moshi.adapter(Comment.class);
 
