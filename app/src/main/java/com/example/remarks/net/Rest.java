@@ -1,12 +1,16 @@
 package com.example.remarks.net;
 
+import android.os.Build;
+
 import com.example.remarks.BuildConfig;
 import com.example.remarks.models.Annotation;
 import com.example.remarks.models.Comment;
 import com.ryanharter.auto.value.moshi.AutoValueMoshiAdapterFactory;
 import com.squareup.moshi.Moshi;
 
+import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
@@ -22,8 +26,20 @@ public class Rest {
                 .add(new AutoValueMoshiAdapterFactory())
                 .build();
 
+
+        OkHttpClient.Builder okhttpBuilder = new OkHttpClient.Builder();
+
+        if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            okhttpBuilder.addInterceptor(interceptor);
+        }
+
+        final OkHttpClient client = okhttpBuilder.build();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BuildConfig.BASE_URL)
+                .client(client)
                 .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .build();
 
